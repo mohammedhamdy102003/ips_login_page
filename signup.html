@@ -1,0 +1,148 @@
+<!DOCTYPE html>
+<html lang="ar">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Sign Up - AI-Based IPS</title>
+
+    <!-- Font Awesome -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+
+    <!-- Main CSS -->
+    <link rel="stylesheet" href="style.css">
+</head>
+<body>
+
+<div class="login-container">
+
+    <!-- Header -->
+    <div class="header">
+        <i class="fas fa-shield-alt logo-icon"></i>
+        <div class="logo-text">
+            <h2>AI-Based IPS</h2>
+            <p>Intrusion Prevention System</p>
+        </div>
+    </div>
+
+    <!-- Card -->
+    <div class="card">
+        <h1>Create Account</h1>
+
+        <!-- Full Name -->
+        <div class="input-group">
+            <label>Full Name</label>
+            <div class="input-wrapper">
+                <input type="text" placeholder="Enter your full name" id="nameInput">
+                <i class="fas fa-check-circle check-icon"></i>
+            </div>
+        </div>
+
+        <!-- Email -->
+        <div class="input-group">
+            <label>Email Address</label>
+            <div class="input-wrapper">
+                <input type="email" placeholder="Enter your email" id="emailInput">
+                <i class="fas fa-check-circle check-icon"></i>
+            </div>
+        </div>
+
+        <!-- Password -->
+        <div class="input-group">
+            <label>Password</label>
+            <div class="input-wrapper">
+                <input type="password" placeholder="Create a password" id="passwordInput">
+                <i class="fas fa-eye toggle-password" id="togglePassword"></i>
+            </div>
+        </div>
+
+        <!-- Confirm Password -->
+        <div class="input-group">
+            <label>Confirm Password</label>
+            <div class="input-wrapper">
+                <input type="password" placeholder="Confirm your password" id="confirmPassword">
+                <i class="fas fa-eye toggle-password" id="toggleConfirmPassword"></i>
+            </div>
+        </div>
+
+        <!-- Sign Up Button -->
+        <button class="main-btn user-btn" id="signUpBtn">
+            <span>Create Account</span>
+            <i class="fas fa-user-plus"></i>
+        </button>
+
+        <!-- Back to Login -->
+        <p class="signup-text">
+            Already have an account?
+            <a href="index.html">Sign in</a>
+        </p>
+
+    </div>
+</div>
+
+<script>
+// Show/hide password
+const passwordInput = document.getElementById("passwordInput");
+const confirmPassword = document.getElementById("confirmPassword");
+const togglePassword = document.getElementById("togglePassword");
+const toggleConfirmPassword = document.getElementById("toggleConfirmPassword");
+
+togglePassword.onclick = () => {
+    const type = passwordInput.type === "password" ? "text" : "password";
+    passwordInput.type = type;
+    togglePassword.classList.toggle("fa-eye");
+    togglePassword.classList.toggle("fa-eye-slash");
+};
+
+toggleConfirmPassword.onclick = () => {
+    const type = confirmPassword.type === "password" ? "text" : "password";
+    confirmPassword.type = type;
+    toggleConfirmPassword.classList.toggle("fa-eye");
+    toggleConfirmPassword.classList.toggle("fa-eye-slash");
+};
+
+// Validation functions
+function validateEmail(email) {
+    const re = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+    return re.test(email);
+}
+
+function validateName(name) {
+    const re = /^[A-Za-z\s]+$/;
+    return re.test(name);
+}
+
+// Sign Up handler
+document.getElementById("signUpBtn").onclick = function(e){
+    e.preventDefault();
+    const nameVal = document.getElementById("nameInput").value;
+    const emailVal = document.getElementById("emailInput").value;
+    const passVal = passwordInput.value;
+    const confirmVal = confirmPassword.value;
+
+    if(!validateName(nameVal)){
+        alert("Full name should contain only letters!");
+        return;
+    }
+
+    if(!validateEmail(emailVal)){
+        alert("Please enter a valid email address!");
+        return;
+    }
+
+    if(passVal.trim() === ""){
+        alert("Password cannot be empty!");
+        return;
+    }
+
+    if(passVal !== confirmVal){
+        alert("Passwords do not match!");
+        return;
+    }
+
+    // Redirect to login page after successful signup
+    window.location.href = "index.html";
+}
+</script>
+
+</body>
+</html>

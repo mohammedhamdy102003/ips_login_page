@@ -1,0 +1,151 @@
+<!DOCTYPE html>
+<html lang="ar">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>AI-Based IPS Login</title>
+
+    <!-- Font Awesome -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+
+    <!-- CSS -->
+    <link rel="stylesheet" href="style.css">
+</head>
+<body>
+
+<div class="login-container">
+
+    <!-- Header -->
+    <div class="header">
+        <i class="fas fa-shield-alt logo-icon"></i>
+        <div class="logo-text">
+            <h2>AI-Based IPS</h2>
+            <p>Intrusion Prevention System</p>
+        </div>
+    </div>
+
+    <!-- Card -->
+    <div class="card">
+        <h1>Welcome Back</h1>
+
+        <!-- Toggle -->
+        <div class="toggle-container">
+            <button class="toggle-btn active" id="adminToggle">Admin</button>
+            <button class="toggle-btn" id="userToggle">User</button>
+        </div>
+
+        <!-- Email -->
+        <div class="input-group">
+            <label>Email Address</label>
+            <div class="input-wrapper">
+                <input type="email" placeholder="Enter your email">
+                <i class="fas fa-check-circle check-icon"></i>
+            </div>
+        </div>
+
+        <!-- Password -->
+        <div class="input-group">
+            <label>Password</label>
+            <div class="input-wrapper">
+                <input type="password" placeholder="Enter your password" id="passwordInput">
+                <i class="fas fa-eye toggle-password" id="togglePassword"></i>
+            </div>
+        </div>
+
+        <!-- Extra -->
+        <div class="extra-links">
+            <label><input type="checkbox"> Remember me</label>
+            <a href="#">Forgot password?</a>
+        </div>
+
+        <!-- Admin Button -->
+        <button class="main-btn admin-btn" id="adminBtn">
+            <span>Sign In as Admin</span>
+            <i class="fas fa-shield-halved"></i>
+        </button>
+
+        <!-- User Button -->
+        <button class="main-btn user-btn" id="userBtn" style="display:none">
+            <span>Sign In as User</span>
+            <i class="fas fa-user"></i>
+        </button>
+
+        <!-- Sign Up -->
+        <p class="signup-text">
+            Don’t have an account?
+            <a href="signup.html">Sign up</a>
+        </p>
+
+    </div>
+</div>
+
+<script>
+const adminToggle = document.getElementById("adminToggle");
+const userToggle = document.getElementById("userToggle");
+const adminBtn = document.getElementById("adminBtn");
+const userBtn = document.getElementById("userBtn");
+const passwordInput = document.getElementById("passwordInput");
+const togglePassword = document.getElementById("togglePassword");
+
+// Toggle admin/user
+adminToggle.onclick = () => {
+    adminToggle.classList.add("active");
+    userToggle.classList.remove("active");
+
+    adminBtn.style.display = "flex";
+    userBtn.style.display = "none";
+};
+
+userToggle.onclick = () => {
+    userToggle.classList.add("active");
+    adminToggle.classList.remove("active");
+
+    userBtn.style.display = "flex";
+    adminBtn.style.display = "none";
+};
+
+// Show/hide password
+togglePassword.onclick = () => {
+    const type = passwordInput.type === "password" ? "text" : "password";
+    passwordInput.type = type;
+    togglePassword.classList.toggle("fa-eye");
+    togglePassword.classList.toggle("fa-eye-slash");
+};
+
+// Validation function
+function validateEmail(email) {
+    const re = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+    return re.test(email);
+}
+
+// Login handler
+function handleLogin(e, role) {
+    e.preventDefault();
+    const emailValue = document.querySelector(".card input[type='email']").value;
+    const passwordValue = passwordInput.value;
+
+    if(!validateEmail(emailValue)) {
+        alert("Please enter a valid email address!");
+        return;
+    }
+
+    if(passwordValue.trim() === "") {
+        alert("Password cannot be empty!");
+        return;
+    }
+
+    // Redirect to dashboard pages
+    if(role === "admin") {
+        window.location.href = "admin-dashboard.html";
+    } else {
+        window.location.href = "user-dashboard.html";
+    }
+}
+
+// Attach login handlers
+adminBtn.addEventListener("click", (e) => handleLogin(e, "admin"));
+userBtn.addEventListener("click", (e) => handleLogin(e, "user"));
+</script>
+
+</body>
+</html>
