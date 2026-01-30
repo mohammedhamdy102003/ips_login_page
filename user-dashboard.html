@@ -1,0 +1,190 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>IPS User View - AI-Based IPS</title>
+
+  <!-- Font Awesome -->
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+
+  <!-- Dashboard CSS -->
+  <link rel="stylesheet" href="dashboard.css" />
+</head>
+<body>
+  <div class="app">
+    <!-- Sidebar -->
+    <aside class="sidebar">
+      <div class="brand">
+        <div class="brand-badge" aria-hidden="true">
+          <i class="fa-solid fa-shield"></i>
+        </div>
+        <div class="brand-title">AI-Based IPS</div>
+      </div>
+
+      <nav class="nav" aria-label="Sidebar">
+        <a class="active" href="#" aria-current="page"><i class="fa-solid fa-table-cells"></i>Overview</a>
+      </nav>
+
+      <div class="sidebar-footer">SYSTEM v3.6.1</div>
+    </aside>
+
+    <!-- Main -->
+    <main class="main">
+      <!-- Topbar -->
+      <header class="topbar">
+        <div class="search" role="search">
+          <i class="fa-solid fa-magnifying-glass" aria-hidden="true"></i>
+          <input type="text" placeholder="Global search for threats, IPs, or logs..." aria-label="Global search" />
+        </div>
+
+        <div class="top-actions">
+          <div class="segmented" role="tablist" aria-label="View mode">
+            <button id="adminViewBtn" role="tab" aria-selected="false" type="button">Admin View</button>
+            <button class="active" id="userViewBtn" role="tab" aria-selected="true" type="button">User View</button>
+          </div>
+
+          <button class="icon-btn" type="button" aria-label="Notifications">
+            <i class="fa-regular fa-bell"></i>
+          </button>
+
+          <div class="avatar" aria-label="User menu">
+            <i class="fa-regular fa-user"></i>
+          </div>
+        </div>
+      </header>
+
+      <div class="content">
+        <!-- Page header -->
+        <div class="page-head">
+          <div>
+            <h1 class="page-title">IPS User View</h1>
+            <p class="page-subtitle">Monitoring overview of recent detections and system health</p>
+          </div>
+
+          <div class="head-actions">
+            <button class="btn" type="button">
+              <i class="fa-solid fa-download"></i>
+              Export Logs
+            </button>
+          </div>
+        </div>
+<!-- System Secure Banner -->
+<section class="sys-banner">
+  <div class="sys-content">
+    <div class="sys-icon">
+      <i class="fa-solid fa-shield"></i>
+    </div>
+
+    <h2>System Secure <span class="check">✔</span></h2>
+    <p>Your network is protected and monitored</p>
+
+    <div class="sys-badge">
+      Last security check: <strong>Just now</strong>
+    </div>
+  </div>
+</section>
+
+        <!-- Stats -->
+        <section class="stats" aria-label="Summary stats">
+          <div class="card stat">
+            <div>
+              <div class="label">Total Events</div>
+              <div class="value">1,247</div>
+              <div class="hint good"><i class="fa-solid fa-arrow-trend-up"></i> +12.5% vs last hour</div>
+            </div>
+            <div class="icon blue" aria-hidden="true"><i class="fa-solid fa-chart-line"></i></div>
+          </div>
+
+          <div class="card stat">
+            <div>
+              <div class="label">Threats Blocked</div>
+              <div class="value" style="color: rgba(239,68,68,0.95);">89</div>
+              <div class="hint bad"><i class="fa-solid fa-triangle-exclamation"></i> 5 critical threats</div>
+            </div>
+            <div class="icon pink" aria-hidden="true"><i class="fa-solid fa-shield-halved"></i></div>
+          </div>
+
+          <div class="card stat">
+            <div>
+              <div class="label">Benign Traffic</div>
+              <div class="value" style="color: rgba(16,185,129,0.95);">1,158</div>
+              <div class="hint"><i class="fa-regular fa-circle-check"></i> No latency issues</div>
+            </div>
+            <div class="icon green" aria-hidden="true"><i class="fa-solid fa-circle-check"></i></div>
+          </div>
+
+          <div class="card stat">
+            <div>
+              <div class="label">Model Accuracy</div>
+              <div class="value" style="color: rgba(59,130,246,0.95);">94.2%</div>
+              <div class="hint good"><i class="fa-solid fa-arrow-trend-up"></i> +0.4% after v3.6.1</div>
+            </div>
+            <div class="icon sky" aria-hidden="true"><i class="fa-solid fa-square-poll-vertical"></i></div>
+          </div>
+        </section>
+
+        <!-- Table -->
+         <div class="threat-panel">
+    <div class="threat-top">
+        <span>Current Threat Level</span>
+        <span class="lvl-tag">LOW</span>
+    </div>
+    <div class="bar-track">
+        <div class="bar-fill" style="width: 25%"></div>
+    </div>
+    <p class="threat-msg">Your network activity is normal. No significant threats detected.</p>
+</div>
+      
+      </div>
+
+      <!-- Footer -->
+      <footer class="footer">
+        <div>© 2023 Enterprise Cybersecurity Solutions Inc. All rights reserved.</div>
+        <div class="footer-links">
+          <a href="#">Terms of Service</a>
+          <a href="#">Privacy Policy</a>
+          <a href="#">Support</a>
+        </div>
+      </footer>
+    </main>
+  </div>
+  <script>
+if(localStorage.getItem("role") !== "user"){
+    window.location.href = "index.html";
+}
+</script>
+
+
+  <script>
+    // View toggle redirects
+    const adminViewBtn = document.getElementById('adminViewBtn');
+    const userViewBtn = document.getElementById('userViewBtn');
+
+    adminViewBtn.addEventListener('click', () => {
+      window.location.href = 'admin-dashboard.html';
+    });
+
+    userViewBtn.addEventListener('click', () => {
+      // already here
+    });
+
+    // Table filter (matches source/destination IP)
+    const tableFilter = document.getElementById('tableFilter');
+    const eventsBody = document.getElementById('eventsBody');
+
+    function applyFilter() {
+      const q = (tableFilter.value || '').trim().toLowerCase();
+      const rows = Array.from(eventsBody.querySelectorAll('tr'));
+      rows.forEach(row => {
+        if (!q) { row.style.display = ''; return; }
+        const text = row.innerText.toLowerCase();
+        row.style.display = text.includes(q) ? '' : 'none';
+      });
+    }
+
+    tableFilter.addEventListener('input', applyFilter);
+  </script>
+</body>
+</html>
+

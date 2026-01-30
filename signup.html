@@ -111,37 +111,44 @@ function validateName(name) {
     return re.test(name);
 }
 
-// Sign Up handler
 document.getElementById("signUpBtn").onclick = function(e){
     e.preventDefault();
-    const nameVal = document.getElementById("nameInput").value;
-    const emailVal = document.getElementById("emailInput").value;
-    const passVal = passwordInput.value;
-    const confirmVal = confirmPassword.value;
 
-    if(!validateName(nameVal)){
-        alert("Full name should contain only letters!");
+    const name = document.getElementById("nameInput").value.trim();
+    const email = document.getElementById("emailInput").value.trim();
+    const password = document.getElementById("passwordInput").value;
+    const confirm = document.getElementById("confirmPassword").value;
+
+    if(!name || !email || !password){
+        alert("All fields are required");
         return;
     }
 
-    if(!validateEmail(emailVal)){
-        alert("Please enter a valid email address!");
+    if(password !== confirm){
+        alert("Passwords do not match");
         return;
     }
 
-    if(passVal.trim() === ""){
-        alert("Password cannot be empty!");
+    let users = JSON.parse(localStorage.getItem("users")) || [];
+
+    const exists = users.find(u => u.email === email);
+    if(exists){
+        alert("Email already exists");
         return;
     }
 
-    if(passVal !== confirmVal){
-        alert("Passwords do not match!");
-        return;
-    }
+    users.push({
+        name,
+        email,
+        password,
+        role: "user"
+    });
 
-    // Redirect to login page after successful signup
-    window.location.href = "index.html";
-}
+    localStorage.setItem("users", JSON.stringify(users));
+    localStorage.setItem("role", "user");
+
+    window.location.href = "user-dashboard.html";
+};
 </script>
 
 </body>

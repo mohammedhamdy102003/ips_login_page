@@ -1,0 +1,326 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>IPS Admin Console - AI-Based IPS</title>
+
+  <!-- Font Awesome -->
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+
+  <!-- Dashboard CSS -->
+  <link rel="stylesheet" href="dashboard.css" />
+</head>
+<body>
+  <div class="app">
+    <!-- Sidebar -->
+    <aside class="sidebar">
+      <div class="brand">
+        <div class="brand-badge" aria-hidden="true">
+          <i class="fa-solid fa-shield"></i>
+        </div>
+        <div class="brand-title">AI-Based IPS</div>
+      </div>
+
+      <nav class="nav" aria-label="Sidebar">
+        <a class="active" href="#" aria-current="page"><i class="fa-solid fa-table-cells"></i>Overview</a>
+      </nav>
+
+      <div class="sidebar-footer">SYSTEM v3.6.1</div>
+    </aside>
+
+    <!-- Main -->
+    <main class="main">
+      <!-- Topbar -->
+      <header class="topbar">
+        <div class="search" role="search">
+          <i class="fa-solid fa-magnifying-glass" aria-hidden="true"></i>
+          <input type="text" placeholder="Global search for threats, IPs, or logs..." aria-label="Global search" />
+        </div>
+
+        <div class="top-actions">
+          <div class="segmented" role="tablist" aria-label="View mode">
+            <button class="active" id="adminViewBtn" role="tab" aria-selected="true" type="button">Admin View</button>
+            <button id="userViewBtn" role="tab" aria-selected="false" type="button">User View</button>
+          </div>
+
+          <button class="icon-btn" type="button" aria-label="Notifications">
+            <i class="fa-regular fa-bell"></i>
+          </button>
+
+          <div class="avatar" aria-label="User menu">
+            <i class="fa-regular fa-user"></i>
+          </div>
+        </div>
+      </header>
+
+      <div class="content">
+        <!-- Page header -->
+        <div class="page-head">
+          <div>
+            <h1 class="page-title">IPS Admin Console</h1>
+            <p class="page-subtitle">Real-time threat detection and mitigation system status</p>
+          </div>
+
+          <div class="head-actions">
+            <button class="btn" type="button">
+              <i class="fa-solid fa-download"></i>
+              Export Logs
+            </button>
+            <button class="btn primary" type="button">
+              <i class="fa-solid fa-rotate"></i>
+              Retrain Model
+            </button>
+          </div>
+        </div>
+
+        <!-- Stats -->
+        <section class="stats" aria-label="Summary stats">
+          <div class="card stat">
+            <div>
+              <div class="label">Total Events</div>
+              <div class="value">1,247</div>
+              <div class="hint good"><i class="fa-solid fa-arrow-trend-up"></i> +12.5% vs last hour</div>
+            </div>
+            <div class="icon blue" aria-hidden="true"><i class="fa-solid fa-chart-line"></i></div>
+          </div>
+
+          <div class="card stat">
+            <div>
+              <div class="label">Threats Blocked</div>
+              <div class="value" style="color: rgba(239,68,68,0.95);">89</div>
+              <div class="hint bad"><i class="fa-solid fa-triangle-exclamation"></i> 5 critical threats</div>
+            </div>
+            <div class="icon pink" aria-hidden="true"><i class="fa-solid fa-shield-halved"></i></div>
+          </div>
+
+          <div class="card stat">
+            <div>
+              <div class="label">Benign Traffic</div>
+              <div class="value" style="color: rgba(16,185,129,0.95);">1,158</div>
+              <div class="hint"><i class="fa-regular fa-circle-check"></i> No latency issues</div>
+            </div>
+            <div class="icon green" aria-hidden="true"><i class="fa-solid fa-circle-check"></i></div>
+          </div>
+
+          <div class="card stat">
+            <div>
+              <div class="label">Model Accuracy</div>
+              <div class="value" style="color: rgba(59,130,246,0.95);">94.2%</div>
+              <div class="hint good"><i class="fa-solid fa-arrow-trend-up"></i> +0.4% after v3.6.1</div>
+            </div>
+            <div class="icon sky" aria-hidden="true"><i class="fa-solid fa-square-poll-vertical"></i></div>
+          </div>
+        </section>
+
+        <!-- Panels -->
+        <section class="grid-2" aria-label="System panels">
+          <div class="card panel">
+            <div class="panel-head">
+              <div class="dot" aria-hidden="true"><i class="fa-solid fa-gear"></i></div>
+              <div class="panel-title">System Configuration</div>
+            </div>
+
+            <div class="setting">
+              <div class="setting-row">
+                <div>
+                  <div class="setting-name">Auto-Blocking</div>
+                  <div class="setting-desc">Automatically drop packets identified as malicious</div>
+                </div>
+                <label class="switch" aria-label="Auto-blocking">
+                  <input id="autoBlocking" type="checkbox" checked />
+                  <span class="slider"></span>
+                </label>
+              </div>
+            </div>
+
+            <div class="threshold">
+              <div class="threshold-top">
+                <div>
+                  <div class="setting-name">Detection Threshold</div>
+                  <div class="setting-desc">Sensitivity level for AI classification</div>
+                </div>
+                <div class="threshold-value" id="thresholdValue">0.70</div>
+              </div>
+              <input class="range" id="thresholdRange" type="range" min="0" max="1" step="0.01" value="0.70" />
+              <div class="threshold-scale">
+                <span>PERMISSIVE</span>
+                <span>AGGRESSIVE</span>
+              </div>
+            </div>
+          </div>
+
+          <div class="card panel">
+            <div class="panel-head">
+              <div class="dot" aria-hidden="true"><i class="fa-solid fa-circle-info"></i></div>
+              <div class="panel-title">Model Intelligence</div>
+            </div>
+
+            <div class="kv">
+              <div>
+                <div class="k">STATUS</div>
+                <div class="v"><span class="status"><span class="s-dot"></span>Active</span></div>
+              </div>
+              <div>
+                <div class="k">VERSION</div>
+                <div class="v">v3.6.1-stable</div>
+              </div>
+              <div>
+                <div class="k">LAST TRAINING</div>
+                <div class="v">Oct 24, 2023 &bull; 14:22</div>
+              </div>
+              <div>
+                <div class="k">PARAMETERS</div>
+                <div class="v">1.4B weights</div>
+              </div>
+            </div>
+
+            <div class="info-box" role="note">
+              <i class="fa-solid fa-lightbulb" aria-hidden="true"></i>
+              <div>
+                New threat patterns detected in the last 6 hours suggest a potential model update is required for optimal protection.
+              </div>
+            </div>
+          </div>
+        </section>
+
+        <!-- Table -->
+        <section class="card table-card" aria-label="Recent detection events">
+          <div class="table-head">
+            <div class="table-title">Recent Detection Events</div>
+            <div class="table-filter">
+              <i class="fa-solid fa-magnifying-glass" aria-hidden="true"></i>
+              <input id="tableFilter" type="text" placeholder="Filter by IP..." aria-label="Filter by IP" />
+            </div>
+          </div>
+
+          <div style="overflow:auto;">
+            <table>
+              <thead>
+                <tr>
+                  <th>TIMESTAMP</th>
+                  <th>SOURCE IP</th>
+                  <th>DESTINATION IP</th>
+                  <th>ATTACK TYPE</th>
+                  <th>PREDICTION</th>
+                  <th>CONFIDENCE</th>
+                  <th>STATUS</th>
+                </tr>
+              </thead>
+              <tbody id="eventsBody">
+                <tr>
+                  <td class="mono dim">2023-10-25<br/>09:42:12</td>
+                  <td class="mono ip"><a href="#" data-ip="192.168.1.104">192.168.1.104</a></td>
+                  <td class="mono dim">10.0.0.45</td>
+                  <td>DDoS (SYN Flood)</td>
+                  <td><span class="badge mal">Malicious</span></td>
+                  <td>
+                    <div class="conf">
+                      <div class="bar"><span style="width:98%"></span></div>
+                      <div class="pct">98%</div>
+                    </div>
+                  </td>
+                  <td><span class="status-pill blocked"><i class="fa-solid fa-ban"></i>Blocked</span></td>
+                </tr>
+
+                <tr>
+                  <td class="mono dim">2023-10-25<br/>09:41:58</td>
+                  <td class="mono ip"><a href="#" data-ip="172.16.254.1">172.16.254.1</a></td>
+                  <td class="mono dim">10.0.0.12</td>
+                  <td>Web Traffic (HTTPS)</td>
+                  <td><span class="badge ben">Benign</span></td>
+                  <td>
+                    <div class="conf">
+                      <div class="bar good"><span style="width:99%"></span></div>
+                      <div class="pct">99%</div>
+                    </div>
+                  </td>
+                  <td><span class="status-pill allowed"><i class="fa-solid fa-circle-check"></i>Allowed</span></td>
+                </tr>
+
+                <tr>
+                  <td class="mono dim">2023-10-25<br/>09:41:02</td>
+                  <td class="mono ip"><a href="#" data-ip="45.22.112.89">45.22.112.89</a></td>
+                  <td class="mono dim">10.0.5.210</td>
+                  <td>SQL Injection Attempt</td>
+                  <td><span class="badge mal">Malicious</span></td>
+                  <td>
+                    <div class="conf">
+                      <div class="bar"><span style="width:82%"></span></div>
+                      <div class="pct">82%</div>
+                    </div>
+                  </td>
+                  <td><span class="status-pill blocked"><i class="fa-solid fa-ban"></i>Blocked</span></td>
+                </tr>
+              </tbody>
+            </table>
+          </div>
+
+          <div class="table-foot">
+            <div>Showing 3 of 1,247 events</div>
+            <div class="pager" aria-label="Pagination">
+              <span class="link">Previous</span>
+              <span class="page active">1</span>
+              <span class="link">2</span>
+              <span class="link">3</span>
+              <span class="link">Next</span>
+            </div>
+          </div>
+        </section>
+      </div>
+
+      <!-- Footer -->
+      <footer class="footer">
+        <div>© 2023 Enterprise Cybersecurity Solutions Inc. All rights reserved.</div>
+        <div class="footer-links">
+          <a href="#">Terms of Service</a>
+          <a href="#">Privacy Policy</a>
+          <a href="#">Support</a>
+        </div>
+      </footer>
+    </main>
+  </div>
+  
+
+  <script>
+    if(localStorage.getItem("role") !== "admin"){
+    window.location.href = "index.html";
+}
+    // View toggle redirects
+    const adminViewBtn = document.getElementById('adminViewBtn');
+    const userViewBtn = document.getElementById('userViewBtn');
+
+    userViewBtn.addEventListener('click', () => {
+      window.location.href = 'user-dashboard.html';
+    });
+
+    adminViewBtn.addEventListener('click', () => {
+      // already here
+    });
+
+    // Threshold slider
+    const thresholdRange = document.getElementById('thresholdRange');
+    const thresholdValue = document.getElementById('thresholdValue');
+    thresholdRange.addEventListener('input', () => {
+      thresholdValue.textContent = Number(thresholdRange.value).toFixed(2);
+    });
+
+    // Table filter (matches source/destination IP)
+    const tableFilter = document.getElementById('tableFilter');
+    const eventsBody = document.getElementById('eventsBody');
+
+    function applyFilter() {
+      const q = (tableFilter.value || '').trim().toLowerCase();
+      const rows = Array.from(eventsBody.querySelectorAll('tr'));
+      rows.forEach(row => {
+        if (!q) { row.style.display = ''; return; }
+        const text = row.innerText.toLowerCase();
+        row.style.display = text.includes(q) ? '' : 'none';
+      });
+    }
+
+    tableFilter.addEventListener('input', applyFilter);
+  </script>
+</body>
+</html>
+

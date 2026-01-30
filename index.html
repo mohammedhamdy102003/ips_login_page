@@ -26,7 +26,7 @@
 
     <!-- Card -->
     <div class="card">
-        <h1>Welcome Back</h1>
+        <h1>Welcome</h1>
 
         <!-- Toggle -->
         <div class="toggle-container">
@@ -119,28 +119,39 @@ function validateEmail(email) {
 }
 
 // Login handler
+const ADMIN_EMAIL = "admin@ips.com";
+const ADMIN_PASSWORD = "admin123";
+
 function handleLogin(e, role) {
     e.preventDefault();
-    const emailValue = document.querySelector(".card input[type='email']").value;
-    const passwordValue = passwordInput.value;
 
-    if(!validateEmail(emailValue)) {
-        alert("Please enter a valid email address!");
+    const email = document.querySelector("input[type='email']").value;
+    const password = document.getElementById("passwordInput").value;
+
+    if(role === "admin"){
+        if(email === ADMIN_EMAIL && password === ADMIN_PASSWORD){
+            localStorage.setItem("role", "admin");
+            window.location.href = "admin-dashboard.html";
+        } else {
+            alert("Admin data incorrect");
+        }
         return;
     }
 
-    if(passwordValue.trim() === "") {
-        alert("Password cannot be empty!");
-        return;
-    }
+    const users = JSON.parse(localStorage.getItem("users")) || [];
+    const user = users.find(u => u.email === email && u.password === password);
 
-    // Redirect to dashboard pages
-    if(role === "admin") {
-        window.location.href = "admin-dashboard.html";
-    } else {
+    if(user){
+        localStorage.setItem("role", "user");
         window.location.href = "user-dashboard.html";
+    } else {
+        alert("User not found");
     }
 }
+
+adminBtn.onclick = (e) => handleLogin(e, "admin");
+userBtn.onclick = (e) => handleLogin(e, "user");
+
 
 // Attach login handlers
 adminBtn.addEventListener("click", (e) => handleLogin(e, "admin"));
