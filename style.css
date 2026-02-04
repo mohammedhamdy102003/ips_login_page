@@ -380,3 +380,66 @@ tbody tr {
         padding: 20px;
     }
 }
+/* تنسيق زر التبديل */
+#themeToggle {
+    position: fixed;
+    top: 20px;
+    right: 20px;
+    width: 45px;
+    height: 45px;
+    background: #ffffff;
+    border: 1px solid #4a90e2;
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    cursor: pointer;
+    z-index: 9999;
+    box-shadow: 0 4px 10px rgba(0,0,0,0.1);
+    transition: all 0.3s ease;
+}
+
+#themeToggle i {
+    font-size: 20px;
+    color: #333;
+}
+
+/* إعدادات الـ Dark Mode الإجبارية */
+body.dark-mode {
+    background-color: #0b1220 !important;
+}
+
+/* تحويل كل النصوص للون الأبيض في الدارك مود */
+body.dark-mode h1, 
+body.dark-mode h2, 
+body.dark-mode h4,
+body.dark-mode p, 
+body.dark-mode label, 
+body.dark-mode span,
+body.dark-mode .signup-text,
+body.dark-mode .logo-text h2,
+body.dark-mode .logo-text p {
+    color: #ffffff !important;
+}
+
+/* تعديل الكارت والـ Inputs عشان يمشوا مع الدارك */
+body.dark-mode .card {
+    background: #151f2c !important;
+    box-shadow: 0 10px 25px rgba(0,0,0,0.4);
+}
+
+body.dark-mode input {
+    background-color: #1a2432 !important;
+    color: #ffffff !important;
+    border-color: #3b82f6 !important;
+}
+
+body.dark-mode #themeToggle {
+    background: #1a2432;
+    border-color: #f59e0b;
+}
+
+/* الروابط */
+body.dark-mode a {
+    color: #00b3ff !important;
+}
