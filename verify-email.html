@@ -1,0 +1,169 @@
+<!DOCTYPE html>
+<html lang="ar">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Verify Email - AI-Based IPS</title>
+
+    <!-- Font Awesome -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+
+    <!-- Main CSS -->
+    <link rel="stylesheet" href="style.css">
+</head>
+<body>
+
+<div class="login-container">
+
+    <!-- Header -->
+    <div class="header">
+        <i class="fas fa-shield-alt logo-icon"></i>
+        <div class="logo-text">
+            <h2>AI-Based IPS</h2>
+            <p>Intrusion Prevention System</p>
+        </div>
+    </div>
+
+    <!-- Card -->
+    <div class="card">
+        <h1>Verify Your Email</h1>
+
+        <p class="info-text">
+            We sent a 6-digit verification code to
+            <strong id="emailLabel">your email</strong>.
+            Enter the code below to continue.
+        </p>
+
+        <!-- Code Inputs -->
+        <div class="code-inputs" id="codeInputs" aria-label="Verification code">
+            <input class="code-input" inputmode="numeric" pattern="[0-9]*" maxlength="1" aria-label="Digit 1">
+            <input class="code-input" inputmode="numeric" pattern="[0-9]*" maxlength="1" aria-label="Digit 2">
+            <input class="code-input" inputmode="numeric" pattern="[0-9]*" maxlength="1" aria-label="Digit 3">
+            <input class="code-input" inputmode="numeric" pattern="[0-9]*" maxlength="1" aria-label="Digit 4">
+            <input class="code-input" inputmode="numeric" pattern="[0-9]*" maxlength="1" aria-label="Digit 5">
+            <input class="code-input" inputmode="numeric" pattern="[0-9]*" maxlength="1" aria-label="Digit 6">
+        </div>
+
+        <div class="resend-row">
+            <span id="resendHint">Didn’t receive a code?</span>
+            <button class="link-btn" id="resendBtn" disabled>Resend code (45s)</button>
+        </div>
+
+        <!-- Verify Button -->
+        <button class="main-btn user-btn" id="verifyBtn" disabled>
+            <span>Verify Email</span>
+            <i class="fas fa-check"></i>
+        </button>
+
+        <!-- Change Email / Back -->
+        <button class="secondary-btn" id="changeEmailBtn" type="button">
+            Change email
+        </button>
+
+        <p class="signup-text">
+            Back to
+            <a href="index.html">Sign in</a>
+        </p>
+    </div>
+</div>
+
+<script>
+const emailLabel = document.getElementById("emailLabel");
+const codeInputsWrap = document.getElementById("codeInputs");
+const inputs = Array.from(codeInputsWrap.querySelectorAll("input"));
+const verifyBtn = document.getElementById("verifyBtn");
+const resendBtn = document.getElementById("resendBtn");
+const changeEmailBtn = document.getElementById("changeEmailBtn");
+
+const pendingEmail = localStorage.getItem("pendingVerificationEmail") || "";
+emailLabel.textContent = pendingEmail || "your email";
+
+function getCode() {
+    return inputs.map(i => i.value).join("");
+}
+
+function updateVerifyState() {
+    const code = getCode();
+    verifyBtn.disabled = !(code.length === inputs.length && /^\d{6}$/.test(code));
+}
+
+// Input behavior: only digits, auto-advance, backspace, paste
+inputs.forEach((input, idx) => {
+    input.addEventListener("input", (e) => {
+        input.value = (input.value || "").replace(/\D/g, "").slice(0, 1);
+        if (input.value && idx < inputs.length - 1) inputs[idx + 1].focus();
+        updateVerifyState();
+    });
+
+    input.addEventListener("keydown", (e) => {
+        if (e.key === "Backspace" && !input.value && idx > 0) {
+            inputs[idx - 1].focus();
+        }
+    });
+
+    input.addEventListener("paste", (e) => {
+        const text = (e.clipboardData || window.clipboardData).getData("text") || "";
+        const digits = text.replace(/\D/g, "").slice(0, inputs.length);
+        if (!digits) return;
+        e.preventDefault();
+        digits.split("").forEach((d, i) => {
+            if (inputs[i]) inputs[i].value = d;
+        });
+        inputs[Math.min(digits.length, inputs.length) - 1].focus();
+        updateVerifyState();
+    });
+});
+
+// Timer for resend
+let remaining = 45;
+let timer = null;
+
+function startTimer() {
+    remaining = 45;
+    resendBtn.disabled = true;
+    resendBtn.textContent = `Resend code (${remaining}s)`;
+
+    if (timer) clearInterval(timer);
+    timer = setInterval(() => {
+        remaining -= 1;
+        if (remaining <= 0) {
+            clearInterval(timer);
+            timer = null;
+            resendBtn.disabled = false;
+            resendBtn.textContent = "Resend code";
+            return;
+        }
+        resendBtn.textContent = `Resend code (${remaining}s)`;
+    }, 1000);
+}
+
+resendBtn.addEventListener("click", () => {
+    alert("A new verification code has been sent (demo).");
+    startTimer();
+});
+
+// Verify handler (frontend demo)
+verifyBtn.addEventListener("click", (e) => {
+    e.preventDefault();
+    const code = getCode();
+    if (!/^\d{6}$/.test(code)) return;
+
+    // Demo: accept any 6-digit code
+    localStorage.setItem("emailVerified", "true");
+    if (pendingEmail) localStorage.setItem("verifiedEmail", pendingEmail);
+    window.location.href = "verified.html";
+});
+
+changeEmailBtn.addEventListener("click", () => {
+    localStorage.removeItem("pendingVerificationEmail");
+    window.location.href = "signup.html";
+});
+
+// init
+startTimer();
+inputs[0].focus();
+</script>
+
+</body>
+</html>
+

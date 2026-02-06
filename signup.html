@@ -147,7 +147,11 @@ document.getElementById("signUpBtn").onclick = function(e){
     localStorage.setItem("users", JSON.stringify(users));
     localStorage.setItem("role", "user");
 
-    window.location.href = "index.html";
+    // Start email verification (frontend demo flow)
+    localStorage.setItem("pendingVerificationEmail", email);
+    localStorage.setItem("emailVerified", "false");
+
+    window.location.href = "verify-email.html";
 };
 </script>
 
