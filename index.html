@@ -1,183 +1,101 @@
 <!DOCTYPE html>
-<html lang="ar">
+<html lang="en">
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>AI-Based IPS Login</title>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
 
-    <!-- Font Awesome -->
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+<title>IPS AI</title>
 
-    <!-- CSS -->
-    <link rel="stylesheet" href="style.css">
+<link rel="stylesheet" href="landing.css">
+
+<link href="https://fonts.googleapis.com/css2?family=Orbitron:wght@500;700&family=Inter:wght@300;400;600&display=swap" rel="stylesheet">
+<script src="https://cdnjs.cloudflare.com/ajax/libs/three.js/r128/three.min.js"></script>
+
 </head>
+
 <body>
-   <div id="themeToggle">
-    <i class="fas fa-moon" id="themeIcon"></i>
+
+<!-- Loader -->
+<div id="loader">
+    <h1 class="scan">Initializing AI Engine...</h1>
 </div>
 
-<div class="login-container">
+<!-- Navbar -->
+<nav id="navbar">
 
-    <!-- Header -->
-    <div class="header">
-        <i class="fas fa-shield-alt logo-icon"></i>
-        <div class="logo-text">
-            <h2>AI-Based IPS</h2>
-            <p>Intrusion Prevention System</p>
-        </div>
+    <div class="logo">IPS AI</div>
+
+    <ul class="nav-links">
+        <li>Features</li>
+        <li>Threat Map</li>
+        <li>About</li>
+    </ul>
+
+    <div class="auth-buttons">
+        <a href="login.html" class="signin">Sign In</a>
+        <a href="signup.html" class="register">Register</a>
     </div>
 
-    <!-- Card -->
-    <div class="card">
-        <h1>Welcome</h1>
-
-        <!-- Toggle -->
-        <div class="toggle-container">
-            <button class="toggle-btn active" id="adminToggle">Admin</button>
-            <button class="toggle-btn" id="userToggle">User</button>
-        </div>
-
-        <!-- Email -->
-        <div class="input-group">
-            <label>Email Address</label>
-            <div class="input-wrapper">
-                <input type="email" placeholder="Enter your email">
-                <i class="fas fa-check-circle check-icon"></i>
-            </div>
-        </div>
-
-        <!-- Password -->
-        <div class="input-group">
-            <label>Password</label>
-            <div class="input-wrapper">
-                <input type="password" placeholder="Enter your password" id="passwordInput">
-                <i class="fas fa-eye toggle-password" id="togglePassword"></i>
-            </div>
-        </div>
-
-        <!-- Extra -->
-        <div class="extra-links">
-            <label><input type="checkbox"> Remember me</label>
-            <a href="forgot-password.html">Forgot password?</a>
-        </div>
-
-        <!-- Admin Button -->
-        <button class="main-btn admin-btn" id="adminBtn">
-            <span>Sign In as Admin</span>
-            <i class="fas fa-shield-halved"></i>
-        </button>
-
-        <!-- User Button -->
-        <button class="main-btn user-btn" id="userBtn" style="display:none">
-            <span>Sign In as User</span>
-            <i class="fas fa-user"></i>
-        </button>
-
-        <!-- Sign Up -->
-        <p class="signup-text">
-            Don’t have an account?
-            <a href="signup.html">Sign up</a>
-        </p>
-
+    <div class="hamburger" onclick="toggleMenu()">
+        ☰
     </div>
+
+</nav>
+
+<!-- Mobile Menu -->
+<div id="mobileMenu">
+    <a href="#">Features</a>
+    <a href="#">Threat Map</a>
+    <a href="#">About</a>
+    <a href="login.html">Sign In</a>
+    <a href="signup.html">Register</a>
 </div>
 
-<script>
-const adminToggle = document.getElementById("adminToggle");
-const userToggle = document.getElementById("userToggle");
-const adminBtn = document.getElementById("adminBtn");
-const userBtn = document.getElementById("userBtn");
-const passwordInput = document.getElementById("passwordInput");
-const togglePassword = document.getElementById("togglePassword");
+<!-- Hero -->
+<section class="hero">
+    <canvas id="network"></canvas>
+    <div id="globe"></div>
+    <div class="hero-content">
+        <h1 class="glow-text">AI-Powered Intrusion Prevention</h1>
+        <p class="sub-text">for the Next Generation Networks</p>
+        <small>Detect. Analyze. Stop threats before they strike.</small>
+        <br>
+       <button class="cta" onclick="window.location.href='login.html'">
+Get Started
+</button>
 
-// Toggle admin/user
-adminToggle.onclick = () => {
-    adminToggle.classList.add("active");
-    userToggle.classList.remove("active");
+    </div>
+</section>
 
-    adminBtn.style.display = "flex";
-    userBtn.style.display = "none";
-};
+<!-- Counter -->
+<section class="counter">
+    <h2><span id="threat-number">0</span> Threats Blocked Today</h2>
+</section>
 
-userToggle.onclick = () => {
-    userToggle.classList.add("active");
-    adminToggle.classList.remove("active");
+<!-- Features -->
+</section>
 
-    userBtn.style.display = "flex";
-    adminBtn.style.display = "none";
-};
+<section class="features">
+    <div class="card card-blue show">
+        <div class="icon">🔍</div>
+        <h2>Detect</h2>
+        <p>AI Monitoring in Real Time</p>
+    </div>
 
-// Show/hide password
-togglePassword.onclick = () => {
-    const type = passwordInput.type === "password" ? "text" : "password";
-    passwordInput.type = type;
-    togglePassword.classList.toggle("fa-eye");
-    togglePassword.classList.toggle("fa-eye-slash");
-};
+    <div class="card card-purple show">
+        <div class="icon">🧠</div>
+        <h2>Analyze</h2>
+        <p>Identify Malicious Patterns</p>
+    </div>
 
-// Validation function
-function validateEmail(email) {
-    const re = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
-    return re.test(email);
-}
+    <div class="card card-red show">
+        <div class="icon">🛡️</div>
+        <h2>Prevent</h2>
+        <p>Block Threats Instantly</p>
+    </div>
+</section>
 
-// Login handler
-const ADMIN_EMAIL = "admin@ips.com";
-const ADMIN_PASSWORD = "admin123";
-
-function handleLogin(e, role) {
-    e.preventDefault();
-
-    const email = document.querySelector("input[type='email']").value;
-    const password = document.getElementById("passwordInput").value;
-
-    if(role === "admin"){
-        if(email === ADMIN_EMAIL && password === ADMIN_PASSWORD){
-            localStorage.setItem("role", "admin");
-            window.location.href = "admin-dashboard.html";
-        } else {
-            alert("Admin data incorrect");
-        }
-        return;
-    }
-
-    const users = JSON.parse(localStorage.getItem("users")) || [];
-    const user = users.find(u => u.email === email && u.password === password);
-
-    if(user){
-        localStorage.setItem("role", "user");
-        window.location.href = "user-dashboard.html";
-    } else {
-        alert("User not found");
-    }
-}
-
-adminBtn.onclick = (e) => handleLogin(e, "admin");
-userBtn.onclick = (e) => handleLogin(e, "user");
-
-
-// Attach login handlers
-adminBtn.addEventListener("click", (e) => handleLogin(e, "admin"));
-userBtn.addEventListener("click", (e) => handleLogin(e, "user"));
-</script>
-<script>
-    const themeToggle = document.getElementById('themeToggle');
-    const themeIcon = document.getElementById('themeIcon');
-    const body = document.body;
-
-    
-    themeToggle.onclick = () => {
-        body.classList.toggle('dark-mode');
-        
-        if (body.classList.contains('dark-mode')) {
-            themeIcon.classList.replace('fa-moon', 'fa-sun');
-            themeIcon.style.color = '#f59e0b';
-        } else {
-            themeIcon.classList.replace('fa-sun', 'fa-moon'); // 
-            themeIcon.style.color = '#333';
-        }
-    };
-</script>
+<script src="landing.js"></script>
 
 </body>
 </html>

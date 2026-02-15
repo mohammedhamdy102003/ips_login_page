@@ -45,7 +45,7 @@ const goLoginBtn = document.getElementById("goLoginBtn");
 const redirectHint = document.getElementById("redirectHint");
 
 goLoginBtn.addEventListener("click", () => {
-    window.location.href = "index.html";
+    window.location.href = "login.html";
 });
 
 let t = 3;
@@ -53,7 +53,7 @@ const timer = setInterval(() => {
     t -= 1;
     if (t <= 0) {
         clearInterval(timer);
-        window.location.href = "index.html";
+        window.location.href = "login.html";
         return;
     }
     redirectHint.textContent = `Redirecting in ${t} seconds...`;
